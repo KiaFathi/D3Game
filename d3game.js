@@ -1,5 +1,4 @@
 //Practice Game in D3
-
 var gameOptions = {
   width: 500,
   height: 500,
@@ -13,7 +12,7 @@ var testPlayer = {
   y: gameOptions.height/2,
   width: 50,
   height: 50,
-  link: 'http://img84.imageshack.us/img84/4743/rogerr.gif'
+  link: 'player.png'
 };
 
 playerData.push(testPlayer);
@@ -54,7 +53,8 @@ function update(data) {
   });
 }
 
-
+//First update
+update(playerData);
 // Grab a random sample of letters from the alphabet, in alphabetical order.
 setInterval(function() {
   var newData =[];
@@ -64,7 +64,7 @@ setInterval(function() {
     y: (gameOptions.height - 60) * Math.random(),
     width: scale,
     height: scale,
-    link: 'rogerr.gif'
+    link: 'player.png'
   };
   newData.push(newPlayer);
   update(newData);
