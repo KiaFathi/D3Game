@@ -5,7 +5,6 @@ var gameOptions = {
   numEnemies: 10
 };
 
-var playerData = [];
 
 var testPlayer = {
   x: gameOptions.width/2,
@@ -15,10 +14,23 @@ var testPlayer = {
   link: 'player.png'
 };
 
-playerData.push(testPlayer);
+var playerData = [testPlayer];
 
 var svg = d3.select('body').append('svg')
   .attr('width', gameOptions.width).attr('height', gameOptions.height);
+
+var drag = d3.behavior.drag()
+  .on('drag', dragMove);
+
+function dragMove(d){
+  var x = d3.event.x;
+  var y = d3.event.y;
+
+  d3.select(this).attr('x', x).attr('y', y);
+  console.log('dragging');
+  testPlayer.x = x;
+  testPlayer.y = y;
+}
 
 function update(data) {
 
@@ -36,21 +48,21 @@ function update(data) {
       .attr("height", function(d) { return d.height;})
       .attr('xlink:href', function(d){
         return d.link;
-      });
+      }).call(drag);
 
   // EXIT
   // Remove old elements as needed.
   player.exit().remove();
 
-  player.transition().ease('linear').duration(1000).attr('x', function(d){
-    return d.x;
-  }).attr('y', function(d){
-    return d.y;
-  }).attr('width', function(d){
-    return d.width;
-  }).attr('height', function(d){
-    return d.height;
-  });
+  // player.transition().ease('linear').duration(1000).attr('x', function(d){
+  //   return d.x;
+  // }).attr('y', function(d){
+  //   return d.y;
+  // }).attr('width', function(d){
+  //   return d.width;
+  // }).attr('height', function(d){
+  //   return d.height;
+  // });
 }
 
 //First update
@@ -62,8 +74,8 @@ setInterval(function() {
   var newPlayer = {
     x: (gameOptions.width -60) * Math.random(),
     y: (gameOptions.height - 60) * Math.random(),
-    width: scale,
-    height: scale,
+    width: 50,
+    height: 50,
     link: 'player.png'
   };
   newData.push(newPlayer);
