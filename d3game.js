@@ -6,6 +6,7 @@ var gameOptions = {
 };
 
 
+
 var testPlayer = {
   x: gameOptions.width/2,
   y: gameOptions.height/2,
@@ -17,10 +18,36 @@ var testPlayer = {
 var playerData = [testPlayer];
 
 var svg = d3.select('body').append('svg')
-  .attr('width', gameOptions.width).attr('height', gameOptions.height);
+  // .attr('width', gameOptions.width).attr('height', gameOptions.height);
 
 var drag = d3.behavior.drag()
   .on('drag', dragMove);
+
+d3.select("body")
+    .on("keydown", function() {
+      var key = d3.event.keyCode;
+      console.log(key);
+      if(key === 37){ //go left
+        testPlayer.x -= 30;
+      } 
+      if(key === 38){ //go up
+        d3.event.preventDefault();
+        testPlayer.y -= 30;
+      } 
+      if(key === 39){ // go right
+        testPlayer.x += 30;
+      } 
+      if(key === 40){ // go down
+        d3.event.preventDefault();
+        testPlayer.y += 30;
+      } 
+      update(playerData);
+      
+    });
+//37 = left
+//38 = top
+//39 =right
+//40 = down
 
 function dragMove(d){
   var x = d3.event.x;
@@ -54,30 +81,20 @@ function update(data) {
   // Remove old elements as needed.
   player.exit().remove();
 
-  // player.transition().ease('linear').duration(1000).attr('x', function(d){
-  //   return d.x;
-  // }).attr('y', function(d){
-  //   return d.y;
-  // }).attr('width', function(d){
-  //   return d.width;
-  // }).attr('height', function(d){
-  //   return d.height;
-  // });
+  player.transition().duration(300).attr('x', function(d){
+    return d.x;
+  }).attr('y', function(d){
+    return d.y;
+  }).attr('width', function(d){
+    return d.width;
+  }).attr('height', function(d){
+    return d.height;
+  });
 }
 
 //First update
 update(playerData);
 // Grab a random sample of letters from the alphabet, in alphabetical order.
-setInterval(function() {
-  var newData =[];
-  var scale = Math.random()*75 +25;
-  var newPlayer = {
-    x: (gameOptions.width -60) * Math.random(),
-    y: (gameOptions.height - 60) * Math.random(),
-    width: 50,
-    height: 50,
-    link: 'player.png'
-  };
-  newData.push(newPlayer);
-  update(newData);
-}, 1000);
+// setInterval(function() {
+//   update(playerData);
+// }, 1000);
